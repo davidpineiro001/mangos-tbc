@@ -1,5 +1,5 @@
 #include "AuctionHouseMgr.h"
-#include "AuctionHouseReplenisher.h"
+#include "AHReplenisher.h"
 
 #include "Log.h"
 #include <fstream>

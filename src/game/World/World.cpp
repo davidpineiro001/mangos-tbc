@@ -1342,7 +1342,7 @@ void World::SetInitialWorldSettings()
     sLog.outString();
 
     //New logic for AH
-    sAuctionMgr.
+    PopulateAuctionHouseFromCSV();
 
     ///- Load dynamic data tables from the database
     sLog.outString("Loading Auctions...");
