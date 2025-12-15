@@ -1342,13 +1342,13 @@ void World::SetInitialWorldSettings()
     sLog.outString();
 
     //New logic for AH
-    
+    SeedItemsWithRandomProperties("weapon_ids.csv");
 
     ///- Load dynamic data tables from the database
     sLog.outString("Loading Auctions...");
     sAuctionMgr.LoadAuctionItems();
     sAuctionMgr.LoadAuctions();
-    PopulateAuctionHouseFromDB();
+    
     sLog.outString(">>> Auctions loaded");
     sLog.outString();
 
