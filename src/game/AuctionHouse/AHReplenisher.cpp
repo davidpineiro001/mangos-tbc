@@ -16,6 +16,8 @@ static uint32 ComputeSuffixFactor(ItemTemplate const* proto)
 void PopulateAuctionHouseFromDB()
 {
     AuctionHouseEntry const* house = sAuctionHouseStore.LookupEntry(2); // Neutral AH
+    Player* auctionOwner = sObjectMgr.GetPlayer(11); // AH bank
+
     if (!house)
         return;
 
@@ -101,27 +103,31 @@ void PopulateAuctionHouseFromDB()
             if (!rp || rp->RandomPropertyID != proto->RandomProperty)
                 continue;
 
-            Item* item = Item::CreateItem(entry, 1, nullptr);
+            Item* item = Item::CreateItem(entry, 1, auctionOwner);
             if (!item)
                 continue;
 
             item->SetItemRandomPropertiesId(rp->ID);
             item->SetItemSuffixFactor(suffixFactor);
-            item->SetState(ITEM_NEW, nullptr);
+            item->SetState(ITEM_NEW, auctionOwner);
+            item->SetUInt32Value(ITEM_FIELD_DURABILITY, maxDurability);
             item->SaveToDB();
 
             AuctionEntry* auction = new AuctionEntry();
             auction->Id = sObjectMgr.GenerateAuctionID();
+            auction->auctionHouseEntry = 7;
             auction->itemGuidLow = item->GetGUIDLow();
             auction->itemTemplate = entry;
             auction->itemCount = 1;
-            auction->owner = 0; // server-owned
+            auction->owner = auctionOwner->GetGUIDLow(); // server-owned
+            auction->buyout = buyoutprice;
+            auction->expireTime = time(nullptr) + 12 * HOUR;
             auction->startbid = startprice;
             auction->bid = 0;
-            auction->buyout = buyoutprice;
-            auction->itemdurability = maxDurability;
-            auction->expireTime = time(nullptr) + 12 * HOUR;
-            auction->auctionHouseEntry = 7;
+            
+            
+            
+            
 
             auction->SaveToDB();
             sAuctionMgr.AddAuction(auction);
