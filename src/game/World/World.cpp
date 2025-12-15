@@ -68,6 +68,7 @@
 #include "Maps/TransportMgr.h"
 #include "Anticheat/Anticheat.hpp"
 #include "Spells/SpellStacking.h"
+#include "AHReplenisher.h"
 
 #ifdef BUILD_AHBOT
  #include "AuctionHouseBot/AuctionHouseBot.h"
@@ -1339,6 +1340,9 @@ void World::SetInitialWorldSettings()
     sObjectMgr.LoadBroadcastTextLocales();
     sLog.outString(">>> Localization strings loaded");
     sLog.outString();
+
+    //New logic for AH
+    sAuctionMgr.
 
     ///- Load dynamic data tables from the database
     sLog.outString("Loading Auctions...");

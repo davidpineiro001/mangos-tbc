@@ -1,0 +1,17 @@
+#ifndef AUCTIONHOUSE_REPLENISHER_H
+#define AUCTIONHOUSE_REPLENISHER_H
+
+#include "Player.h" // For Player*, Item* references
+#include <cstdint>
+
+// This is part of the AuctionHouseMgr class
+class AuctionHouseMgr
+{
+public:
+    void UpdateReplenisher();
+};
+
+// Free function to populate AH from CSV
+void PopulateAuctionHouseFromCSV();
+
+#endif // AUCTIONHOUSE_REPLENISHER_H

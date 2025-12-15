@@ -190,6 +190,8 @@ class AuctionHouseMgr
         bool RemoveAItem(uint32 id);
 
         void Update();
+        void UpdateReplenisher();
+
 
     private:
         AuctionHouseObject  mAuctions[MAX_AUCTION_HOUSE_TYPE];
