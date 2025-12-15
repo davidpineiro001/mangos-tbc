@@ -21,7 +21,7 @@ void AuctionHouseMgr::UpdateReplenisher()
 
 void PopulateAuctionHouseFromCSV()
 {
-    Player* auctionOwner = sObjectMgr.GetPlayer(11); // AH owner ID
+    
     if (!auctionOwner)
         return;
 
@@ -43,11 +43,11 @@ void PopulateAuctionHouseFromCSV()
             try
             {
                 uint32 entry = std::stoul(cell);
-                Item* item = Item::CreateItem(entry, 1, auctionOwner);
+                Item* item = Item::CreateItem(entry, 1, nullptr);
                 if (!item)
                     continue;
 
-                auctionOwner->AddItem(item);
+                auctionOwner->sAuctionMgr.AddItem(item);
                 sLog.outString("Created AH item %u with guid %u", entry, item->GetGUIDLow());
             }
             catch (...)
