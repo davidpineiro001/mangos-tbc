@@ -19,6 +19,8 @@
 cmake_minimum_required(VERSION 3.16)
 cmake_policy(SET CMP0069 NEW)
 
+
+
 # Will cache object files if ccache is available
 # Must be set at top of cmake outside of project header
 find_program(CCACHE_PROGRAM ccache)
@@ -205,7 +207,7 @@ if(POLICY CMP0167)
 endif()
 
 # Find needed packages and if necessery abort if something important is missing
-find_package(Boost 1.70.0 REQUIRED COMPONENTS program_options thread regex serialization filesystem)
+find_package(Boost 1.70.0 REQUIRED)
 
 if(NOT Boost_FOUND AND (BUILD_GAME_SERVER OR BUILD_LOGIN_SERVER))
   message(STATUS "BOOST_ROOT = $ENV{BOOST_ROOT}")

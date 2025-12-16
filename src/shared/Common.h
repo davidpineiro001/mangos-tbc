@@ -19,7 +19,10 @@
 #ifndef MANGOSSERVER_COMMON_H
 #define MANGOSSERVER_COMMON_H
 
+
+
 #include "Platform/Define.h"
+
 
 #include <stdio.h>
 #include <stdlib.h>

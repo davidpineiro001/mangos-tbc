@@ -18,6 +18,21 @@
 # disable warnings for dependencies
 DisableWarnings()
 
+# Force CMake to see Homebrew boost
+set(BOOST_ROOT "/opt/homebrew/opt/boost")
+set(BOOST_INCLUDEDIR "${BOOST_ROOT}/include")
+set(BOOST_LIBRARYDIR "${BOOST_ROOT}/lib")
+
+# Find Boost libraries
+find_package(Boost 1.70.0 REQUIRED COMPONENTS program_options thread regex serialization filesystem)
+
+if(NOT Boost_FOUND)
+    message(FATAL_ERROR "Boost not found. Please verify BOOST_ROOT points to your brew installation.")
+endif()
+
+include_directories(${Boost_INCLUDE_DIRS})
+link_directories(${Boost_LIBRARY_DIRS})
+
 
 # overwrite target creation macro to add dependencies folder property
 set(SET_DEPENDENCY_PROP TRUE)

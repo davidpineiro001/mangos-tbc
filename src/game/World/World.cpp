@@ -69,6 +69,7 @@
 #include "Anticheat/Anticheat.hpp"
 #include "Spells/SpellStacking.h"
 #include "AHReplenisher.h"
+#include "AuctionHouseMgr.h"
 
 #ifdef BUILD_AHBOT
  #include "AuctionHouseBot/AuctionHouseBot.h"

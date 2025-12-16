@@ -1,5 +1,6 @@
 #include "AuctionHouseMgr.h"
-#include "ObjectMgr.h"
+#include "../ObjectMgr.h"
+
 #include "Item.h"
 #include "Player.h"
 #include "DatabaseEnv.h"
