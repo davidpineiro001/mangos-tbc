@@ -11,6 +11,8 @@
 
 void SeedItemsWithRandomProperties()
 {
+
+    sLog.outString("SeedItemsWithRandomProperties: called");
     uint32 auctionOwnerLowGuid = 11; // AH bot character GUID LOW
 
 
@@ -48,6 +50,15 @@ void SeedItemsWithRandomProperties()
             continue;
         }
 
+        if (!item->GetGUIDLow())
+        {
+            uint32 lowGuid = sObjectMgr.GenerateItemLowGuid();
+            ObjectGuid guid(HIGHGUID_ITEM, lowGuid);
+            item->SetGuidValue(0, guid);
+            item->SaveToDB();
+
+        }
+            
         item->SetUInt32Value(ITEM_FIELD_FLAGS, flags);
         item->SetUInt32Value(ITEM_FIELD_DURABILITY, maxDurability);
         item->SetState(ITEM_NEW, nullptr);
@@ -57,6 +68,9 @@ void SeedItemsWithRandomProperties()
             // Optional: parse and set charges if needed
         }
 
+     
+
+        
         item->SaveToDB();
 
         // Create auction entry
@@ -79,8 +93,9 @@ void SeedItemsWithRandomProperties()
 
     } while (result->NextRow());
 
-   sAuctionMgr.LoadAuctionItems();
+   
 
 
     sLog.outString("SeedItemsWithRandomProperties: completed");
+    
 }

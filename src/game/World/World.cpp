@@ -1245,6 +1245,9 @@ void World::SetInitialWorldSettings()
     sLog.outString("Loading Player Corpses...");
     sObjectMgr.LoadCorpses();
 
+        //New logic for AH
+    SeedItemsWithRandomProperties();
+
     sLog.outString("Loading Player level dependent mail rewards...");
     sObjectMgr.LoadMailLevelRewards();
 
@@ -1343,8 +1346,7 @@ void World::SetInitialWorldSettings()
     sLog.outString(">>> Localization strings loaded");
     sLog.outString();
 
-    //New logic for AH
-    SeedItemsWithRandomProperties();
+
 
     ///- Load dynamic data tables from the database
     sLog.outString("Loading Auctions...");
