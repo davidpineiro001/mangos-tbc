@@ -483,6 +483,15 @@ bool AuctionHouseMgr::RemoveAItem(uint32 id)
     return true;
 }
 
+void AuctionHouseMgr::AddAuction(AuctionEntry* ah)
+{
+    MANGOS_ASSERT(ah);
+    // Delegate insertion to the correct AuctionHouseObject
+    AuctionHouseObject* house = GetAuctionsMap(ah->auctionHouseEntry);
+    MANGOS_ASSERT(house);
+    house->AddAuction(ah);
+}
+
 void AuctionHouseMgr::Update()
 {
     for (auto& mAuction : mAuctions)

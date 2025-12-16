@@ -191,6 +191,10 @@ class AuctionHouseMgr
         void AddAItem(Item* it);
         bool RemoveAItem(uint32 id);
 
+          /* Add an already-created AuctionEntry into in-memory storage. The auction
+              should already be persisted to the DB when calling this. */
+          void AddAuction(AuctionEntry* ah);
+
         void Update();
         void UpdateReplenisher();
 

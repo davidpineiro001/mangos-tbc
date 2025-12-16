@@ -1,22 +1,20 @@
 #include "AuctionHouseMgr.h"
-#include "../ObjectMgr.h"
+#include "Globals/ObjectMgr.h"
+// ...existing code...
 
-#include "Item.h"
-#include "Player.h"
-#include "DatabaseEnv.h"
-#include "Log.h"
-#include "World.h"
+ // ...existing code...
+#include "Entities/Item.h"
+#include "Entities/Player.h"
+#include "Database/DatabaseEnv.h"
+#include "Log/Log.h"
+#include "World/World.h"
 
 void SeedItemsWithRandomProperties()
 {
-    Player* auctionOwner = sObjectMgr.GetPlayer(11); // AH bank
-    if (!auctionOwner)
-    {
-        sLog.outError("SeedItemsWithRandomProperties: Auction owner not found");
-        return;
-    }
+    uint32 auctionOwnerLowGuid = 11; // AH bot character GUID LOW
 
-    QueryResult* result = WorldDatabase.Query(
+
+    std::unique_ptr<QueryResult> result = WorldDatabase.Query(
         "SELECT itemEntry, count, stackable, maxDurability, charges, flags, "
         "       auctionHouse, auctionDuration, startBid, buyout "
         "FROM ah_seed_table"
@@ -43,7 +41,7 @@ void SeedItemsWithRandomProperties()
         uint32 startBid      = fields[8].GetUInt32();
         uint32 buyout        = fields[9].GetUInt32();
 
-        Item* item = Item::CreateItem(entry, count, auctionOwner);
+        Item* item = Item::CreateItem(entry, count, nullptr);
         if (!item)
         {
             sLog.outError("Failed to create item instance for entry %u", entry);
@@ -52,7 +50,7 @@ void SeedItemsWithRandomProperties()
 
         item->SetUInt32Value(ITEM_FIELD_FLAGS, flags);
         item->SetUInt32Value(ITEM_FIELD_DURABILITY, maxDurability);
-        item->SetState(ITEM_NEW, auctionOwner);
+        item->SetState(ITEM_NEW, nullptr);
 
         if (!charges.empty())
         {
@@ -64,11 +62,11 @@ void SeedItemsWithRandomProperties()
         // Create auction entry
         AuctionEntry* auction = new AuctionEntry();
         auction->Id = sObjectMgr.GenerateAuctionID();
-        auction->auctionHouseEntry = auctionHouse;
+        auction->auctionHouseEntry = sAuctionHouseStore.LookupEntry(auctionHouse);
         auction->itemGuidLow = item->GetGUIDLow();
         auction->itemTemplate = entry;
         auction->itemCount = count;
-        auction->owner = auctionOwner->GetGUIDLow(); // server-owned
+        auction->owner = auctionOwnerLowGuid; // server-owned
         auction->startbid = startBid;
         auction->buyout = buyout;
         auction->bid = 0;
@@ -81,10 +79,8 @@ void SeedItemsWithRandomProperties()
 
     } while (result->NextRow());
 
-    delete result;
+   sAuctionMgr.LoadAuctionItems();
 
-    sAuctionMgr.LoadAuctionItems();
-    sAuctionMgr.LoadAuctions();
 
     sLog.outString("SeedItemsWithRandomProperties: completed");
 }

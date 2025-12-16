@@ -68,8 +68,9 @@
 #include "Maps/TransportMgr.h"
 #include "Anticheat/Anticheat.hpp"
 #include "Spells/SpellStacking.h"
-#include "AHReplenisher.h"
-#include "AuctionHouseMgr.h"
+
+#include "AuctionHouse/AuctionHouseMgr.h"
+#include "AuctionHouse/AHReplenisher.h"
 
 #ifdef BUILD_AHBOT
  #include "AuctionHouseBot/AuctionHouseBot.h"

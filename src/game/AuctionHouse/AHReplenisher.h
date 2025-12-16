@@ -1,11 +1,12 @@
 #ifndef AUCTIONHOUSE_REPLENISHER_H
 #define AUCTIONHOUSE_REPLENISHER_H
 
-#include "Player.h" // For Player*, Item* references
+#include "Entities/Player.h" // For Player*, Item* references
+#include "AuctionHouseMgr.h"
 #include <cstdint>
 
 // This is part of the AuctionHouseMgr class
-class AuctionHouseMgr
+class AHReplenisher
 {
 public:
     void UpdateReplenisher();
