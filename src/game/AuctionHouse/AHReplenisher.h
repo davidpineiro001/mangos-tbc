@@ -12,6 +12,6 @@ public:
 };
 
 // Free function to populate AH from CSV
-void PopulateAuctionHouseFromCSV();
+void SeedItemsWithRandomProperties();
 
 #endif // AUCTIONHOUSE_REPLENISHER_H
