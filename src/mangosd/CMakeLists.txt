@@ -52,12 +52,22 @@ add_executable(${EXECUTABLE_NAME}
   ${EXECUTABLE_SRCS}
 )
 
+set(Boost_NO_BOOST_CMAKE ON)
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+find_package(Boost REQUIRED filesystem system)
+
+
 target_link_libraries(${EXECUTABLE_NAME}
   shared
   game
   gsoap
   cmangos-compile-option-interface
+  ${Boost_FILESYSTEM_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
 )
+
+
 
 if(WIN32)
   if(MSVC)

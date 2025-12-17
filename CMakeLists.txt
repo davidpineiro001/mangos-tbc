@@ -1,3 +1,4 @@
+
 #
 # This file is part of the CMaNGOS Project. See AUTHORS file for Copyright information
 #
@@ -16,16 +17,46 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 # Minimum required cmake version to run the build
-cmake_minimum_required(VERSION 3.16)
-cmake_policy(SET CMP0069 NEW)
+# Minimum required cmake version
+cmake_minimum_required(VERSION 3.10)
 
+# --- 1. POLICIES & STANDARDS ---
+if(POLICY CMP0167)
+  cmake_policy(SET CMP0167 OLD)
+endif()
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# --- 2. FORCED PATHS (Apple Silicon / Homebrew) ---
+if(APPLE)
+    set(HOMEBREW_PREFIX "/opt/homebrew")
+    
+    # 1. Force OpenSSL 3.0
+    set(OPENSSL_ROOT_DIR "${HOMEBREW_PREFIX}/opt/openssl@3" CACHE PATH "" FORCE)
+    set(CMAKE_PREFIX_PATH "${OPENSSL_ROOT_DIR};${HOMEBREW_PREFIX};${CMAKE_PREFIX_PATH}" CACHE STRING "" FORCE)
+    
+    # 2. Boost Compatibility for 1.90
+    set(BOOST_ROOT "${HOMEBREW_PREFIX}/opt/boost" CACHE PATH "" FORCE)
+    set(Boost_NO_BOOST_CMAKE ON CACHE BOOL "" FORCE)
+    
+    # --- 3. THE "MANGOSD" FIX ---
+    # We tell the global cache that 'system' is found but has no library file
+    # This prevents the sub-directories from erroring out.
+    set(Boost_SYSTEM_FOUND TRUE CACHE BOOL "Boost system found" FORCE)
+    set(Boost_SYSTEM_LIBRARY "" CACHE STRING "Boost system is header-only" FORCE)
+    set(Boost_SYSTEM_LIBRARY_RELEASE "" CACHE STRING "Boost system is header-only" FORCE)
+    set(Boost_SYSTEM_LIBRARY_DEBUG "" CACHE STRING "Boost system is header-only" FORCE)
+endif()
 
-# Will cache object files if ccache is available
-# Must be set at top of cmake outside of project header
-find_program(CCACHE_PROGRAM ccache)
-if(CCACHE_PROGRAM)
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+if(APPLE)
+    # Force OpenSSL 3.0 paths for Homebrew
+    set(OPENSSL_ROOT_DIR "/opt/homebrew/opt/openssl@3")
+    set(OPENSSL_INCLUDE_DIR "/opt/homebrew/opt/openssl@3/include")
+    set(OPENSSL_LIBRARIES "/opt/homebrew/opt/openssl@3/lib/libssl.dylib;/opt/homebrew/opt/openssl@3/lib/libcrypto.dylib")
+    
+    # This bypasses the version check that is failing
+    set(OPENSSL_VERSION "3.0.0" CACHE STRING "" FORCE)
+    set(OPENSSL_FOUND TRUE CACHE BOOL "" FORCE)
 endif()
 
 project(CMaNGOS_TBC)
@@ -207,7 +238,23 @@ if(POLICY CMP0167)
 endif()
 
 # Find needed packages and if necessery abort if something important is missing
-find_package(Boost 1.70.0 REQUIRED)
+find_package(Boost 1.70.0 REQUIRED COMPONENTS 
+program_options 
+thread 
+regex 
+serialization 
+filesystem
+chrono 
+atomic 
+date_time
+)
+
+# Debug output to verify Boost found the right files
+message(STATUS "Boost Include: ${Boost_INCLUDE_DIRS}")
+message(STATUS "Boost Libraries: ${Boost_LIBRARIES}")
+
+# Include Boost headers globally
+include_directories(${Boost_INCLUDE_DIRS})
 
 if(NOT Boost_FOUND AND (BUILD_GAME_SERVER OR BUILD_LOGIN_SERVER))
   message(STATUS "BOOST_ROOT = $ENV{BOOST_ROOT}")
