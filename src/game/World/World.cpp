@@ -1246,7 +1246,7 @@ void World::SetInitialWorldSettings()
     sObjectMgr.LoadCorpses();
 
         //New logic for AH
-    SeedItemsWithRandomProperties();
+    sAuctionMgr.SeedItemsWithRandomProperties();
 
     sLog.outString("Loading Player level dependent mail rewards...");
     sObjectMgr.LoadMailLevelRewards();
