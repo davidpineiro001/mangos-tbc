@@ -16,7 +16,7 @@ void SeedItemsWithRandomProperties()
     uint32 auctionOwnerLowGuid = 11; // AH bot character GUID LOW
 
 
-    std::unique_ptr<QueryResult> result = WorldDatabase.Query(
+    std::unique_ptr<QueryResult> result = CharacterDatabase.Query(
         "SELECT itemEntry, count, stackable, maxDurability, charges, flags, "
         "       auctionHouse, auctionDuration, startBid, buyout "
         "FROM ah_seed_table"
