@@ -19,7 +19,7 @@ void SeedItemsWithRandomProperties()
     std::unique_ptr<QueryResult> result = CharacterDatabase.Query(
         "SELECT itemEntry, count, stackable, maxDurability, charges, flags, "
         "       auctionHouse, auctionDuration, startBid, buyout "
-        "FROM ah_seed_table"
+        "FROM tbccharacters.ah_seed_table"
     );
 
     if (!result)
