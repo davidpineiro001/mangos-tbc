@@ -11,7 +11,8 @@
 
 void SeedItemsWithRandomProperties()
 {
-
+    CharacterDatabase.Execute("DELETE FROM tbccharacters.auction where itemowner = 11");
+    CharacterDatabase.Execute("DELETE FROM tbccharacters.item_instance WHERE owner_guid = 11");
     sLog.outString("SeedItemsWithRandomProperties: called");
     uint32 auctionOwnerLowGuid = 11; // AH bot character GUID LOW
 
